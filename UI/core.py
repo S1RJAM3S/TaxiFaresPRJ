@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 
 from sklearn.model_selection import train_test_split 
 from sklearn.linear_model import LinearRegression
-
+from sklearn.preprocessing import PolynomialFeatures
 #data 
 df = pd.read_csv('./TripData.csv') 
 # print(df.head(5)) 
@@ -89,13 +89,13 @@ x_fare = df[['weekday', 'time', 'trip_distance']]
 y_fare = df[' fare_amount'].values
 x_train, x_test, y_train, y_test = train_test_split(x_fare, y_fare, test_size= 0.3, random_state= 69) 
 
+# 10th degree regression 
+poly = PolynomialFeatures(degree= 5, include_bias= True)
+x_train_poly = poly.fit_transform(X=x_train)
 reg = LinearRegression() 
-reg.fit(x_train, y_train) 
-
-y_pred = reg.predict(x_test) 
-
+reg.fit(x_train_poly, y_train) 
 def fare_predict(args):
-    inp = pd.DataFrame({"weekday": [args[0]], "time": [args[1]], "trip_distance": [args[2]]})
+    inp = poly.fit_transform(pd.DataFrame({"weekday": [args[0]], "time": [args[1]], "trip_distance": [args[2]]}))
     return reg.predict(inp)
 
 def plot_all():
