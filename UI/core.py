@@ -2,12 +2,14 @@
 #IMPORT 
 import pandas as pd 
 import matplotlib.pyplot as plt 
+import os;
 
 from sklearn.model_selection import train_test_split 
 from sklearn.linear_model import LinearRegression
 from sklearn.preprocessing import PolynomialFeatures
 #data 
-df = pd.read_csv('./TripData.csv') 
+current_file = os.path.abspath(os.path.dirname(__file__))
+df = pd.read_csv(current_file + '\\..\\Data\\TripData.csv') 
 # print(df.head(5)) 
 
 #delete col "medallion" & "hack_license" 
